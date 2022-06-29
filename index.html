@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #box {
+        display: grid;
+        grid-template-rows: 30%, 70%;
+      }
+      #nav {
+        border: 1px solid black;
+      }
+      #menu {
+        border: 1px solid red;
+      }
+      #navElements {
+        /* text-decoration: none; */
+        list-style: None;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+      }
+      #navElements > li:nth-child(8) > button {
+        background: #ffbb15;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 7px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box">
+      <div id="nav">
+        <ul id="navElements">
+          <li>
+            <img id="mainLogo" src="images/arches-logo_108x108.jpg" />
+          </li>
+          <li>Our Menu</li>
+          <li>Download App</li>
+          <li>MyMcDonald's Rewards</li>
+          <li>Exclusive Deals</li>
+          <li>About Our Food</li>
+          <li>Locate</li>
+          <li><button>Order Food</button></li>
+        </ul>
+      </div>
+      <div id="cont">
+        <div id="cero"></div>
+        <div id="menu"></div>
+      </div>
+    </div>
+  </body>
+</html>
