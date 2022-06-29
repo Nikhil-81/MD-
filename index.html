@@ -11,10 +11,13 @@
         grid-template-rows: 30%, 70%;
       }
       #nav {
-        border: 1px solid black;
+        border-bottom: #ffb911 2px solid;
+      }
+      #cont {
+        /* border: 1px solid red; */
       }
       #menu {
-        border: 1px solid red;
+        /* border: 1px solid green; */
       }
       #navElements {
         /* text-decoration: none; */
@@ -28,6 +31,77 @@
         border: none;
         padding: 10px 20px;
         border-radius: 7px;
+      }
+      #cero {
+      }
+      #hero_image {
+        margin: auto;
+        display: block;
+        margin-top: 40px;
+      }
+      #menu > h1:first-child {
+        text-align: center;
+        font-family: system-ui;
+        font-size: 50px;
+        border-bottom: #ffb911 2px solid;
+      }
+      #meal {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+      }
+      #meal > div > h4,
+      #meal > div > input,
+      #meal > div > p {
+        text-align: center;
+        margin: auto;
+        display: block;
+      }
+
+      .mealImg {
+        width: 50%;
+        margin: auto;
+        display: block;
+      }
+      img#procicing_loading {
+        margin: auto;
+        display: block;
+      }
+      #foodloading {
+        background-color: #ffb911;
+      }
+      #preparedFood {
+        display: grid;
+        grid-template-rows: auto 1fr 2.5fr;
+      }
+      .sec1 {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+      }
+      .sec3 {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        margin-top: 20px;
+      }
+      .sec3 > button {
+        padding: 10px 25px;
+        color: black;
+        background-color: #ffb911;
+        border-radius: 10px;
+      }
+      h4.displayAmount {
+        background: #ffb911;
+        text-align: center;
+        font-size: 30px;
+        padding: 19px 0;
+      }
+
+      .sec1 > div > img {
+        display: block;
+        margin: auto;
+      }
+      .sec1 > div > p {
+        text-align: center;
       }
     </style>
   </head>
@@ -44,13 +118,196 @@
           <li>Exclusive Deals</li>
           <li>About Our Food</li>
           <li>Locate</li>
-          <li><button>Order Food</button></li>
+          <li><button onclick="orderFoodNow()">Order Food</button></li>
         </ul>
       </div>
+      <div id="foodloading" style="display: none">
+        <img
+          src="https://c.tenor.com/2yQv-RptjeQAAAAC/fastfood.gif"
+          id="procicing_loading"
+        />
+      </div>
+      <div id="preparedFood" style="display: none">
+        <div class="sec1"></div>
+        <div class="sec2">
+          <h4 class="displayAmount"></h4>
+        </div>
+        <div class="sec3">
+          <button onclick="goHome()">PAY AT COUNTER</button>
+          <button onclick="goHome()">UPI PAYMENTS</button>
+        </div>
+      </div>
       <div id="cont">
-        <div id="cero"></div>
-        <div id="menu"></div>
+        <div id="cero">
+          <img id="hero_image" src="images/1PUB_McDelivery_v4_1168x520.jpg" />
+        </div>
+        <div id="menu">
+          <h1>
+            McDonald's Menu <br />
+            Featured Favorites
+          </h1>
+          <b class="line"></b>
+          <div id="meal"></div>
+        </div>
       </div>
     </div>
   </body>
 </html>
+<script>
+  let foodData = [
+    { image: "./images/bur/2.jpg", name: "Big Mac", price: 100 },
+    {
+      image: "images/bur/3.jpg",
+      name: "Quarter pounder with Cheese ",
+      price: 200,
+    },
+    {
+      image: "images/bur/4.jpg",
+      name: "Double Quarter pounder with Cheese",
+      price: 300,
+    },
+    {
+      image: "images/bur/5.jpg",
+      name: "Quarter pounder with Cheese Deluxe",
+      price: 350,
+    },
+    {
+      image: "images/bur/14.jpg",
+      name: "McDouble",
+      price: 250,
+    },
+    {
+      image: "images/bur/7.jpg",
+      name: "Quarter pounder with Cheese Becon",
+      price: 370,
+    },
+    {
+      image: "images/bur/8.jpg",
+      name: "Cheeseeburger",
+      price: 250,
+    },
+    {
+      image: "images/bur/9.jpg",
+      name: "Big Mac Combo Meal",
+      price: 500,
+    },
+    {
+      image: "images/bur/10.jpg",
+      name: "Cheeseburger Combo Meal",
+      price: 550,
+    },
+    {
+      image: "images/bur/11.jpg",
+      name: "quarter pounder with cheese meal",
+      price: 600,
+    },
+    {
+      image: "images/bur/13.jpg",
+      name: "quarter pounder with cheese meal",
+      price: 670,
+    },
+    {
+      image: "images/bur/hp1.jpg",
+      name: "hamburger happy meal",
+      price: 500,
+    },
+    {
+      image: "images/bur/hp2.jpg",
+      name: "4 piece chicken mcnuggets happy meal",
+      price: 550,
+    },
+  ];
+
+  let data = JSON.parse(localStorage.getItem("orderMeal")) || [];
+  let main_box = document.querySelector("#cont");
+  let toOrder = [];
+  let cont = document.querySelector("#meal");
+  let foodDisplayed = document.querySelector(".sec1");
+  let a = document.querySelector(".displayAmount");
+  let prepFood = document.querySelector("#foodloading");
+  let billingWindow = document.querySelector("#preparedFood");
+
+  display();
+  function display() {
+    cont.innerHTML = [];
+    foodData.forEach(function (el, index) {
+      console.log(el.image);
+      let card = document.createElement("div");
+      let name = document.createElement("h4");
+      let check = document.createElement("input");
+      check.setAttribute("type", "checkbox");
+      let price = document.createElement("p");
+      let image = document.createElement("img");
+
+      check.addEventListener("change", function () {
+        if (this.checked) {
+          toOrder.push(el);
+          console.log(toOrder);
+        } else {
+          for (let i = 0; i < toOrder.length; i++) {
+            if (toOrder[i].name == el.name) {
+              toOrder.splice(i, 1);
+            }
+          }
+          console.log(toOrder);
+        }
+      });
+
+      name.innerText = el.name;
+      price.innerText = el.price;
+      image.setAttribute("src", el.image);
+      image.setAttribute("class", "mealImg");
+      card.append(image, name, price, check);
+      cont.append(card);
+    });
+  }
+
+  function orderFoodNow() {
+    if (toOrder[0] == undefined) {
+      alert("add youe favorit meal");
+    } else {
+      let foodCost = 0;
+      foodDisplayed.innerHTML = [];
+      //   preparedFood.style.display = "block";
+      toOrder.forEach(function (el) {
+        let cards = document.createElement("div");
+        let foodImg = document.createElement("img");
+        foodImg.setAttribute("src", el.image);
+        foodImg.style.width = "40%";
+        let foodname = document.createElement("p");
+        foodname.innerText = el.name;
+        foodCost += el.price;
+        cards.append(foodImg, foodname);
+        foodDisplayed.append(cards);
+      });
+      a.innerText = foodCost;
+
+      let process_order = new Promise(function (resolved, rejected) {
+        let count = 15;
+        let id = setInterval(function () {
+          if (count == 0) {
+            clearInterval(id);
+            resolved();
+          } else {
+            prepFood.style.display = "block";
+            main_box.style.display = "none";
+            console.log("ok");
+            count--;
+          }
+        }, 1000);
+      });
+
+      process_order
+        .then(function () {
+          prepFood.style.display = "none";
+          billingWindow.style.display = "block";
+        })
+        .catch(function () {
+          console.log("error");
+        });
+    }
+  }
+  function goHome() {
+    document.location.reload();
+  }
+</script>
